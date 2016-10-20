@@ -1,34 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Clustering
 {
-    class Table
+    public class Table 
     {
-        public Table(List<List<string>> table)
+        public Table(IList<IList<string>> table)
         {
+            Colunms = table.First();
+            table.Remove(Colunms);
             this.table = table;
         }
 
-        private List<List<string>> table;
+        public IList<string> Colunms { get; } 
 
-        public List<string> GetRowByIndex(int index)
+        public IList<IList<string>> table { get; }
+
+        public IList<string> GetRowByIndex(int index)
         {
             return table[index];
         }
 
-        public List<string> GetColumnByName(string name)
+        public IList<string> GetColumnByName(string name)
         {
-            List<string> column = new List<string>();
-            int index = table[0].IndexOf(name);
-            foreach (var str in table)
-            {
-                column.Add(str[index]);
-            }
-            return column;
+            int index = Colunms.IndexOf(name);
+            return table.Select(str => str[index]).ToList();
         }
+
     }
 }

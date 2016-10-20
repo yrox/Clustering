@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using CsvHelper;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Clustering
 {
-    class Reader
+    public class TableReader
     {
-        public List<List<string>> Read(string filename)
+        public IList<IList<string>> Read(string filename)
         {
-            List<List<string>> result = new List<List<string>>();
+            var result = new List<IList<string>>();
             using (var sr = new StreamReader(filename))
             {
                 var parser = new CsvParser(sr);

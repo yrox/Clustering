@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using CsvHelper;
-
-namespace Clustering
+﻿namespace Clustering
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Reader rdr = new Reader();
-            Table tbl = new Table(rdr.Read("input.csv"));
-            var row = tbl.GetRowByIndex(0);
-            var column = tbl.GetColumnByName("Value");
+            TableReader tr = new TableReader();
+            TableWriter tw = new TableWriter();
+            Table t = new Table(tr.Read("input.csv"));
+            var clust = new Clustering(t);
+            tw.Write(clust.ClusterWith(new PhoneticSimilarity(), "Value"));
+            
         }
 
 
