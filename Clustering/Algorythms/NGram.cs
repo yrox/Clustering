@@ -1,14 +1,14 @@
 ﻿using System.Linq;
 using System.Text;
+using Clustering.Interfaces;
 
-namespace Clustering
+namespace Clustering.Algorythms
 {
     class NGram : IClusteringAlg
     {
         private string getNGrams(string str, byte nGramSize)
         {
             StringBuilder result = new StringBuilder();
-            int currentIndex = 0;
             for (int i = 0; i <= str.Length - nGramSize; i++)
             {
                 for (int j = 0; j < nGramSize; j++)
@@ -20,7 +20,7 @@ namespace Clustering
             return result.ToString();
         }
 
-        public string GetKey(string str)
+        private string GetKey(string str)
         {
             str = str.ToLower();
             StringModifier sm = new StringModifier();
@@ -30,5 +30,9 @@ namespace Clustering
             return str;
         }
 
+        public bool AreEqual(string str1, string str2)
+        {
+            return GetKey(str1) == GetKey(str2);
+        }
     }
 }

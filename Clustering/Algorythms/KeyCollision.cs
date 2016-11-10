@@ -1,8 +1,10 @@
-﻿namespace Clustering
+﻿using Clustering.Interfaces;
+
+namespace Clustering.Algorythms
 {
     public class KeyCollision : IClusteringAlg
     {
-        public string GetKey(string str)
+        private string GetKey(string str)
         {
             str = str.ToLower();
             StringModifier sm = new StringModifier();
@@ -11,5 +13,9 @@
             return str;
         }
 
+        public bool AreEqual(string str1, string str2)
+        {
+            return GetKey(str1) == GetKey(str2);
+        }
     }
 }

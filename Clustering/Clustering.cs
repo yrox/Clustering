@@ -1,33 +1,48 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using Clustering.Interfaces;
 
 namespace Clustering
 {
-    class Clustering
+    public class Clustering
     {
         public Clustering(Table table)
         {
-            initialTable = table;
+            _initialTable = table;
+            _clustersDictionary = new Dictionary<string, IList<int>>();
         }
-        public IClusteringAlg Algorythm { get; set; }
-        private Table initialTable { get; }
+
+        private Table _initialTable;
+        private IDictionary<string, IList<int>> _clustersDictionary;
+
+        private bool TryAdd(IClusteringAlg alg, string line, int index)
+        {
+            foreach (var pair in _clustersDictionary)
+            {
+                if (alg.AreEqual(pair.Key, line))
+                {
+                    pair.Value.Add(index);
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public IList<Table> ClusterWith(IClusteringAlg alg, string columnName)
         {
-            Algorythm = alg;
-            IList<string> column = initialTable.GetColumnByName(columnName).Select(Algorythm.GetKey).ToList();
-            IDictionary<string, IList<int>> lineDictionary = new Dictionary<string, IList<int>>();
-            for (var i = 0; i < column.Count; i++)
+            IDictionary<int, string> column = _initialTable.GetColumnByName(columnName).ToDictionary(x => x.Key, x => x.Value);
+            _clustersDictionary.Add(new KeyValuePair<string, IList<int>>(column.Values.First(), new List<int> {column.Keys.First()}));
+            for (var i = 1; i < column.Count; i++)
             {
-                string line = column.ElementAt(i);
-                if (lineDictionary.ContainsKey(line))
+                var line = column.ElementAt(i).Value;
+                
+                if (!TryAdd(alg, line, column.ElementAt(i).Key))
                 {
-                    lineDictionary[line].Add(i);
-                    continue;
+                    _clustersDictionary.Add(line, new List<int> { column.ElementAt(i).Key });
                 }
-                lineDictionary.Add(line, new List<int> { i });
             }
-            return DictToTableList(lineDictionary);
+            return DictToTableList(_clustersDictionary.Where(l => l.Value.Count() > 1).ToDictionary(x => x.Key, x => x.Value));
         }
 
         private IList<Table> DictToTableList(IDictionary<string, IList<int>> dict)
@@ -36,8 +51,8 @@ namespace Clustering
             foreach (var item in dict)
             {
                 var temp = new List<IList<string>>();
-                temp.Add(initialTable.Colunms);
-                temp.AddRange(item.Value.Select(rowNumber => initialTable.GetRowByIndex(rowNumber)).ToList());
+                temp.Add(_initialTable.Colunms);
+                temp.AddRange(item.Value.Select(rowNumber => _initialTable.GetRowByIndex(rowNumber)).ToList());
                 result.Add(new Table(temp));
             }
             return result;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using CsvHelper;
 
-namespace Clustering
+namespace Clustering.IO
 {
     public class TableWriter
     {

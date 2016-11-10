@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Clustering
@@ -21,10 +22,20 @@ namespace Clustering
             return table[index];
         }
 
-        public IList<string> GetColumnByName(string name)
+        public IDictionary<int, string> GetColumnByName(string name)
         {
-            int index = Colunms.IndexOf(name);
-            return table.Select(str => str[index]).ToList();
+            var result = new Dictionary<int, string>();
+            var index = Colunms.IndexOf(name);
+            for (var i = 0; i < table.Count; i++)
+            {
+                var str = table.ElementAt(i).ElementAt(index);
+
+                if (string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str))
+                    continue;
+
+                result.Add(i, str);
+            }
+            return result;
         }
 
     }

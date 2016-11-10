@@ -1,12 +1,12 @@
-﻿using Phonix;
+﻿using Clustering.Interfaces;
+using Phonix;
 
-namespace Clustering
+namespace Clustering.Algorythms
 {
     public class PhoneticSimilarity : IClusteringAlg
     {
-        public string GetKey(string str)
+        private string GetKey(string str)
         {
-            str = str.ToLower();
             StringModifier sm = new StringModifier();
             str = sm.RemovePunctuation(str);
             str = sm.AlphabetizeWords(str, " ");
@@ -15,5 +15,9 @@ namespace Clustering
             return str;
         }
 
+        public bool AreEqual(string str1, string str2)
+        {
+            return GetKey(str1) == GetKey(str2);
+        }
     }
 }

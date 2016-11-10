@@ -11,7 +11,7 @@ namespace Clustering
             StringBuilder result = new StringBuilder();
             foreach (var ch in str)
             {
-                if (char.IsLetterOrDigit(ch))
+                if (char.IsPunctuation(ch))
                 {
                     result.Append(ch);
                 }

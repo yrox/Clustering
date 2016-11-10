@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Text;
 using CsvHelper;
 
-namespace Clustering
+namespace Clustering.IO
 {
     public class TableReader
     {
@@ -13,11 +15,11 @@ namespace Clustering
             using (var sr = new StreamReader(filename))
             {
                 var parser = new CsvParser(sr);
-
+                
                 while (!sr.EndOfStream)
                 {
                     result.Add(parser.Read().ToList<string>());
-                }                
+                }
             }
             return result;        
         }
