@@ -11,7 +11,7 @@ namespace Clustering
             StringBuilder result = new StringBuilder();
             foreach (var ch in str)
             {
-                if (char.IsPunctuation(ch))
+                if (!char.IsPunctuation(ch))
                 {
                     result.Append(ch);
                 }
@@ -36,12 +36,12 @@ namespace Clustering
         {
             var arr = str.Split(null);
             Array.Sort(arr);
-            return String.Join(separator, arr);
+            return string.Join(separator, arr);
         }
 
         public string AlphabetizeLetters(string str)
         {
-            return String.Concat(str.OrderBy(c => c));
+            return string.Concat(str.OrderBy(c => c));
         }
 
     }

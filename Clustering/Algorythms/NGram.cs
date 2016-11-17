@@ -6,16 +6,19 @@ namespace Clustering.Algorythms
 {
     class NGram : IClusteringAlg
     {
-        private string getNGrams(string str, byte nGramSize)
+        public NGram(byte threshold)
+        {
+            _nGramSize = threshold;
+        }
+        private byte _nGramSize; 
+        private string getNGrams(string str)
         {
             StringBuilder result = new StringBuilder();
-            for (int i = 0; i <= str.Length - nGramSize; i++)
+            
+            for (int i = 0; i <= str.Length - _nGramSize; i++)
             {
-                for (int j = 0; j < nGramSize; j++)
-                {
-                    result.Append(str.ElementAt(i + j));
-                }
-                result.Append(" ");
+                //result.Append(string.Concat(str.Substring(i, nGramSize).OrderBy(x => x)));
+                result.Append((str.Substring(i, _nGramSize)));
             }
             return result.ToString();
         }
@@ -24,8 +27,8 @@ namespace Clustering.Algorythms
         {
             str = str.ToLower();
             StringModifier sm = new StringModifier();
-            str = sm.RemoveSeparators(str);
-            str = getNGrams(str, 4);
+            str = sm.RemovePunctuation(str);
+            str = getNGrams(str);
             str = sm.AlphabetizeWords(str, "");
             return str;
         }

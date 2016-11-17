@@ -5,7 +5,12 @@ namespace Clustering.Algorythms
 {
     public class Levenshtein : IClusteringAlg
     {
-        private int _magicInt = 1;
+        public Levenshtein(int threshold)
+        {
+            _magicInt = threshold;
+        }
+
+        private int _magicInt;
         private int GetLevenshteinDistance(string s1, string s2)
         {
             if (s1.Length == 0)
@@ -15,18 +20,18 @@ namespace Clustering.Algorythms
 
             var distTable = new int[s1.Length + 1, s2.Length + 1];
 
-            for (int i = 0; i <= s1.Length; i++)
+            for (var i = 0; i <= s1.Length; i++)
             {
                 distTable[i, 0] = i;
             }
-            for (int j = 0; j <= s2.Length; j++)
+            for (var j = 0; j <= s2.Length; j++)
             {
                 distTable[0, j] = j;
             }
 
-            for (int i = 1; i <= s1.Length; i++)
+            for (var i = 1; i <= s1.Length; i++)
             {
-                for (int j = 1; j <= s2.Length; j++)
+                for (var j = 1; j <= s2.Length; j++)
                 {
                     if (s1[i - 1] == s2[j - 1])
                     {

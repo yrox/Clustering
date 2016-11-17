@@ -7,7 +7,11 @@ namespace Clustering.Algorythms
 {
     public class Compression : IClusteringAlg
     {
-        private double _magicDouble = 1.5;
+        public Compression(double threshold)
+        {
+            _magicDouble = threshold;
+        }
+        private double _magicDouble;
         private int GetKey(string str)
         {
             var bytes = Encoding.UTF8.GetBytes(str);
@@ -25,7 +29,13 @@ namespace Clustering.Algorythms
         }
         public bool AreEqual(string str1, string str2)
         {
-            var distance = (GetKey(str1 + str2) + GetKey(str2 + str1))/(GetKey(str1 + str1) + GetKey(str2 + str2));
+            var s1 = str1 + str2;
+            var s2 = str2 + str1;
+            var s3 = str1 + str1;
+            var s4 = str2 + str2;
+            double c = (GetKey(s1) + GetKey(s2));
+            double a = (GetKey(s3) + GetKey(s4));
+            double distance = a / c;
             return distance <= _magicDouble;
         }
     }

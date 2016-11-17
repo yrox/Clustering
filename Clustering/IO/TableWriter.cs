@@ -14,7 +14,7 @@ namespace Clustering.IO
             {
                 StringBuilder pathString = new StringBuilder();
                 pathString.Append(Directory.GetCurrentDirectory());
-                pathString.Append("cluster");
+                pathString.Append(@"\output\cluster");
                 pathString.Append(i + 1);
                 pathString.Append(".csv");
                 using (var sw = new StreamWriter(pathString.ToString()))

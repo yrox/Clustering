@@ -11,13 +11,11 @@ namespace Clustering
         {
             TableReader tr = new TableReader();
             TableWriter tw = new TableWriter();
-            //Console.WriteLine("filename:");
-            string fileName = "Contracts.csv";//Console.ReadLine();
-            //Console.WriteLine("attribute:");
-            string columnName = "Contract Description (USAspending)";//Console.ReadLine();
+            string fileName = "Contracts.csv";
+            string columnName = "Investment Title";
             Table t = new Table(tr.Read(fileName));
             var clust = new Clustering(t);
-            tw.Write(clust.ClusterWith(new KeyCollision(), columnName));
+            tw.Write(clust.ClusterWith(new Levenshtein(3), columnName));
         }
     }
 }
