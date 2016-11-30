@@ -1,12 +1,13 @@
 ﻿using Clustering.Algorythms;
 using Clustering.Interfaces;
+using Clustering.IO;
 using Ninject.Modules;
 
-namespace Clustering
+namespace Clustering.NinjectBindings
 {
-    public class NinjectBindings : NinjectModule
+    public class ClusteringAlgBindings : NinjectModule
     {
-        public NinjectBindings(CmdOptions options)
+        public ClusteringAlgBindings(CmdOptions options)
         {
             _options = options;
         }

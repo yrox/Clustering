@@ -17,6 +17,8 @@ namespace Clustering.Algorythms
                 return s2.Length;
             if (s2.Length == 0)
                 return s1.Length;
+            if (Math.Abs(s1.Length - s2.Length) > _magicInt)
+                return Math.Abs(s1.Length - s2.Length);
 
             var distTable = new int[s1.Length + 1, s2.Length + 1];
 

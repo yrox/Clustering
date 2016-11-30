@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Clustering.NinjectBindings;
 using Clustering.Interfaces;
 using Clustering.IO;
 using CommandLine;
@@ -18,7 +18,7 @@ namespace Clustering
             var t = new Table(tr.Read(options.InputFile));
             var clust = new Clustering(t);
 
-            var kernel = new StandardKernel(new NinjectBindings(options));
+            var kernel = new StandardKernel(new ClusteringAlgBindings(options));
             var alg = kernel.Get<IClusteringAlg>(options.Algorythm);
 
             //var algType = Type.GetType("Clustering.Algorythms." + options.Algorythm + ", Clustering");

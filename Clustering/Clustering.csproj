@@ -68,8 +68,8 @@
     <Compile Include="Interfaces\IClusteringAlg.cs" />
     <Compile Include="IO\TableReader.cs" />
     <Compile Include="IO\TableWriter.cs" />
-    <Compile Include="CmdOptions.cs" />
-    <Compile Include="NinjectBindings.cs" />
+    <Compile Include="IO\CmdOptions.cs" />
+    <Compile Include="NinjectBindings\ClusteringAlgBindings.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringModifier.cs" />

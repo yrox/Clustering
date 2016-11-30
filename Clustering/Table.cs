@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Clustering
@@ -38,9 +37,10 @@ namespace Clustering
             return result;
         }
 
-        public bool AreElementsEqual(string columnName)
+        public bool AreElementsIdentical(string columnName)
         {
-            return GetColumnByName(columnName).Any(x => x.Key != GetColumnByName(columnName).Keys.First());
+            var column = GetColumnByName(columnName).Values;
+            return !(column.Any(x => x != column.First()));
         }
     }
 }
