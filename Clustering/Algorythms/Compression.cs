@@ -36,7 +36,7 @@ namespace Clustering.Algorythms
             double c = (GetKey(s1) + GetKey(s2));
             double a = (GetKey(s3) + GetKey(s4));
             double distance = a / c;
-            return distance <= _magicDouble;
+            return distance >= _magicDouble;
         }
     }
 }

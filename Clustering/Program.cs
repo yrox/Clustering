@@ -1,7 +1,8 @@
 ﻿using System;
-using System.IO;
-using Clustering.Algorythms;
+using Clustering.Interfaces;
 using Clustering.IO;
+using CommandLine;
+using Ninject;
 
 namespace Clustering
 {
@@ -9,13 +10,24 @@ namespace Clustering
     {
         static void Main(string[] args)
         {
-            TableReader tr = new TableReader();
-            TableWriter tw = new TableWriter();
-            string fileName = "Contracts.csv";
-            string columnName = "Investment Title";
-            Table t = new Table(tr.Read(fileName));
+            var options = new CmdOptions();
+            Parser.Default.ParseArguments(args, options);
+             
+            var tr = new TableReader();
+            var tw = new TableWriter();
+            var t = new Table(tr.Read(options.InputFile));
             var clust = new Clustering(t);
-            tw.Write(clust.ClusterWith(new Levenshtein(3), columnName));
+
+            var kernel = new StandardKernel(new NinjectBindings(options));
+            var alg = kernel.Get<IClusteringAlg>(options.Algorythm);
+
+            //var algType = Type.GetType("Clustering.Algorythms." + options.Algorythm + ", Clustering");
+            //var alg = (IClusteringAlg)Activator.CreateInstance(algType, options.DoubleArg, options.IntArg);
+
+            //var a = Activator.CreateInstance("Clustering", "Clustering.Options");
+            //var alg = Activator.CreateInstance("Clustering", options.Algorythm) as IClusteringAlg;
+
+            tw.Write(clust.ClusterWith(alg, options.ColumnName), options.ColumnName);
         }
     }
 }

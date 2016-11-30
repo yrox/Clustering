@@ -8,13 +8,17 @@ namespace Clustering.IO
 {
     public class TableWriter
     {
-        public void Write(IList<Table> tables)
+        public void Write(IList<Table> tables, string columnName)
         {
             for (var i = 0; i < tables.Count; i++)
             {
-                StringBuilder pathString = new StringBuilder();
+                var pathString = new StringBuilder();
                 pathString.Append(Directory.GetCurrentDirectory());
                 pathString.Append(@"\output\cluster");
+                if (!tables[i].AreElementsEqual(columnName))
+                {
+                    pathString.Append("#");
+                }
                 pathString.Append(i + 1);
                 pathString.Append(".csv");
                 using (var sw = new StreamWriter(pathString.ToString()))

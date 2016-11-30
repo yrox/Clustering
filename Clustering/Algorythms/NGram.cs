@@ -6,11 +6,11 @@ namespace Clustering.Algorythms
 {
     class NGram : IClusteringAlg
     {
-        public NGram(byte threshold)
+        public NGram(int threshold)
         {
             _nGramSize = threshold;
         }
-        private byte _nGramSize; 
+        private int _nGramSize; 
         private string getNGrams(string str)
         {
             StringBuilder result = new StringBuilder();

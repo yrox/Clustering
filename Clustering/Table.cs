@@ -38,5 +38,9 @@ namespace Clustering
             return result;
         }
 
+        public bool AreElementsEqual(string columnName)
+        {
+            return GetColumnByName(columnName).Any(x => x.Key != GetColumnByName(columnName).Keys.First());
+        }
     }
 }
