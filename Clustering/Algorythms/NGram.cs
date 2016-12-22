@@ -4,7 +4,7 @@ using Clustering.Interfaces;
 
 namespace Clustering.Algorythms
 {
-    class NGram : IClusteringAlg
+    public class NGram : IClusteringAlg
     {
         public NGram(int threshold)
         {
