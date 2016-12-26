@@ -1,23 +1,31 @@
-﻿using Clustering.Interfaces;
+﻿using System.Collections.Generic;
+using Clustering.Interfaces;
 using Phonix;
 
 namespace Clustering.Algorythms
 {
     public class PhoneticSimilarity : IClusteringAlg
     {
-        private string GetKey(string str)
+        public IEnumerable<string> NormalizeStrings(IEnumerable<string> stringCol)
         {
-            StringModifier sm = new StringModifier();
-            str = sm.RemovePunctuation(str);
-            str = sm.AlphabetizeWords(str, " ");
-            DoubleMetaphone dm = new DoubleMetaphone();
-            str = dm.BuildKey(str);
-            return str;
+            var result = new List<string>();
+            foreach (var str in stringCol)
+            {
+                var temp = str.ToLower();
+                StringModifier sm = new StringModifier();
+                temp = sm.RemovePunctuation(temp);
+                temp = sm.AlphabetizeWords(temp, "");
+                DoubleMetaphone dm = new DoubleMetaphone();
+                temp = dm.BuildKey(temp);
+                result.Add(temp);
+            }
+
+            return result;
         }
 
         public bool AreEqual(string str1, string str2)
         {
-            return GetKey(str1) == GetKey(str2);
+           return str1 == str2;
         }
     }
 }

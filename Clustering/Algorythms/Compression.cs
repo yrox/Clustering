@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.IO.Compression;
 using System.Text;
 using Clustering.Interfaces;
@@ -27,6 +28,23 @@ namespace Clustering.Algorythms
                 return mso.ToArray().Length;
             }
         }
+
+        public IEnumerable<string> NormalizeStrings(IEnumerable<string> stringCol)
+        {
+            var result = new List<string>();
+            foreach (var str in stringCol)
+            {
+                var temp = str.ToLower();
+                StringModifier sm = new StringModifier();
+                temp = sm.RemovePunctuation(temp);
+                temp = sm.AlphabetizeWords(temp,"");
+
+                result.Add(temp);
+            }
+            return result;
+            
+        }
+
         public bool AreEqual(string str1, string str2)
         {
             var s1 = str1 + str2;

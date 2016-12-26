@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Clustering.Interfaces;
 
 namespace Clustering.Algorythms
@@ -47,21 +48,24 @@ namespace Clustering.Algorythms
             return distTable[s1.Length, s2.Length]; 
         }
 
-        private int GetKey(string s1, string s2)
+        public IEnumerable<string> NormalizeStrings(IEnumerable<string> stringCol)
         {
-            StringModifier sm = new StringModifier();
-            s1 = s1.ToLower();            
-            s1 = sm.RemovePunctuation(s1);
-            s1 = sm.AlphabetizeWords(s1, " ");
-            s2 = s2.ToLower();
-            s2 = sm.RemovePunctuation(s2);
-            s2 = sm.AlphabetizeWords(s2, " ");
-            return GetLevenshteinDistance(s1, s2);
+            var result = new List<string>();
+            foreach (var str in stringCol)
+            {
+                var temp = str.ToLower();
+                StringModifier sm = new StringModifier();
+                temp = sm.RemovePunctuation(temp);
+                temp = sm.AlphabetizeWords(temp, "");
+                result.Add(temp);
+            }
+
+            return result;
         }
 
         public bool AreEqual(string str1, string str2)
         {
-            return GetKey(str1,str2) <= _magicInt;
+            return GetLevenshteinDistance(str1,str2) <= _magicInt;
         }
     }
 }

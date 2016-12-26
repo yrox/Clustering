@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Clustering.Interfaces;
 
@@ -23,19 +24,25 @@ namespace Clustering.Algorythms
             return result.ToString();
         }
 
-        private string GetKey(string str)
+        public IEnumerable<string> NormalizeStrings(IEnumerable<string> stringCol)
         {
-            str = str.ToLower();
-            StringModifier sm = new StringModifier();
-            str = sm.RemovePunctuation(str);
-            str = getNGrams(str);
-            str = sm.AlphabetizeWords(str, "");
-            return str;
+            var result = new List<string>();
+            foreach (var str in stringCol)
+            {
+                var temp = str.ToLower();
+                StringModifier sm = new StringModifier();
+                temp = sm.RemovePunctuation(temp);
+                temp = getNGrams(temp);
+                temp = sm.AlphabetizeWords(temp, "");
+                result.Add(temp);
+            }
+
+            return result;
         }
 
         public bool AreEqual(string str1, string str2)
         {
-            return GetKey(str1) == GetKey(str2);
+            return str1 == str2;
         }
     }
 }
