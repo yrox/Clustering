@@ -14,7 +14,7 @@ namespace Clustering
 
         public IList<string> Colunms { get; } 
 
-        public IList<IList<string>> table { get; }
+        public IList<IList<string>> table { get; set; }
 
         public IList<string> GetRowByIndex(int index)
         {
@@ -35,6 +35,19 @@ namespace Clustering
                 result.Add(i, str);
             }
             return result;
+        }
+
+        public void CorrectColumn(string columnName, IDictionary<string, IList<int>> clusers)
+        {
+            var columnIndex = Colunms.IndexOf(columnName);
+            foreach (var cluster in clusers)
+            {
+                foreach (var row in cluster.Value)
+                {
+                    table[row][columnIndex] = table.ElementAt(cluster.Value.First()).ElementAt(columnIndex);
+                }
+                //row[columnIndex] = table.First().ElementAt(columnIndex);
+            }
         }
 
         public bool AreElementsIdentical(string columnName)

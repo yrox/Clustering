@@ -40,5 +40,26 @@ namespace Clustering.IO
             }
             
         }
+
+        public void Write(Table table)
+        {
+            var pathString = new StringBuilder();
+            pathString.Append(Directory.GetCurrentDirectory());
+            pathString.Append(@"\output\fixedTable.csv");
+
+            using (var sw = new StreamWriter(pathString.ToString()))
+            {
+                var writer = new CsvWriter(sw);
+                foreach (var row in table.table)
+                {
+                    foreach (var cell in row)
+                    {
+                        writer.WriteField(cell);
+                    }
+                    writer.NextRecord();
+                }
+
+            }
+        }
     }
 }

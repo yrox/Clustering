@@ -35,13 +35,13 @@ namespace Clustering.Test
         [Test]
         public void ShouldCreateTables()
         {
-            Assert.Throws<ArgumentException>(() => _clustering.ClusterWith(_falseMock.Object, "Investment Title"));
+            Assert.Throws<ArgumentException>(() => _clustering.GetClusters(_falseMock.Object, "Investment Title"));
         }
 
         [Test]
         public void ShouldCreateTable()
         {
-            var result = _clustering.ClusterWith(_trueMock.Object, "Investment Title");
+            var result = _clustering.GetClusters(_trueMock.Object, "Investment Title");
             Assert.AreEqual(result.Count, 1);
         }
     }

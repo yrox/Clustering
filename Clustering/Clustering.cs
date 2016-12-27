@@ -7,12 +7,6 @@ namespace Clustering
 {
     public class Clustering
     {
-        public Clustering(Table table)
-        {
-            _initialTable = table;
-            _clustersDictionary = new Dictionary<string, IList<int>>();
-        }
-
         private Table _initialTable;
         private IDictionary<string, IList<int>> _clustersDictionary;
 
@@ -27,25 +21,6 @@ namespace Clustering
                 }
             }
             return false;
-        }
-
-        public IList<Table> ClusterWith(IClusteringAlg alg, string columnName)
-        {
-            IDictionary<int, string> column = _initialTable.GetColumnByName(columnName).ToDictionary(x => x.Key, x => x.Value);
-
-            var noralizedColumn = NormalizeDict(column, alg);
-            _clustersDictionary.Add(new KeyValuePair<string, IList<int>>(noralizedColumn.Values.First(), new List<int> { noralizedColumn.Keys.First() }));
-
-            for (var i = 1; i < column.Count; i++)
-            {
-                var line = column.ElementAt(i).Value;
-                
-                if (!TryAdd(alg, line, column.ElementAt(i).Key))
-                {
-                    _clustersDictionary.Add(line, new List<int> { column.ElementAt(i).Key });
-                }
-            }
-            return DictToTableList(_clustersDictionary.Where(l => l.Value.Count() > 1).ToDictionary(x => x.Key, x => x.Value));
         }
 
         private IList<Table> DictToTableList(IDictionary<string, IList<int>> dict)
@@ -70,6 +45,40 @@ namespace Clustering
                 normalizedDict.Add(dict.Keys.ElementAt(i), values.ElementAt(i));
             }
             return normalizedDict;
+        }
+
+        private void Cluster(IClusteringAlg alg, string columnName, Table table)
+        {
+            _initialTable = table;
+            _clustersDictionary = new Dictionary<string, IList<int>>();
+
+            IDictionary<int, string> column = _initialTable.GetColumnByName(columnName).ToDictionary(x => x.Key, x => x.Value);
+
+            var noralizedColumn = NormalizeDict(column, alg);
+            _clustersDictionary.Add(new KeyValuePair<string, IList<int>>(noralizedColumn.Values.First(), new List<int> { noralizedColumn.Keys.First() }));
+
+            for (var i = 1; i < column.Count; i++)
+            {
+                var line = column.ElementAt(i).Value;
+
+                if (!TryAdd(alg, line, column.ElementAt(i).Key))
+                {
+                    _clustersDictionary.Add(line, new List<int> { column.ElementAt(i).Key });
+                }
+            }
+        }
+
+      
+        public IList<Table> GetClusters(IClusteringAlg alg, string columnName, Table table)
+        {
+            Cluster(alg, columnName, table);
+            return DictToTableList(_clustersDictionary.Where(l => l.Value.Count() > 1).ToDictionary(x => x.Key, x => x.Value));
+        }
+
+        public IDictionary<string, IList<int>> GetClustersDictionary(IClusteringAlg alg, string columnName, Table table)
+        {
+            Cluster(alg, columnName, table);
+            return _clustersDictionary;
         }
     }
 }
