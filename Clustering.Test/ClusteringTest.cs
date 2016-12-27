@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using Clustering.Interfaces;
 using Clustering.IO;
 using Moq;
@@ -28,7 +26,7 @@ namespace Clustering.Test
 
             _tr = new TableReader();
             _table = new Table(_tr.Read("Contracts.csv"));
-            _clustering = new Clustering(_table);
+            _clustering = new Clustering();
 
         }
 

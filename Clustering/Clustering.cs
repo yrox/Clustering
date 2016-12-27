@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using Clustering.Interfaces;
 
 namespace Clustering
@@ -52,9 +51,9 @@ namespace Clustering
             _initialTable = table;
             _clustersDictionary = new Dictionary<string, IList<int>>();
 
-            IDictionary<int, string> column = _initialTable.GetColumnByName(columnName).ToDictionary(x => x.Key, x => x.Value);
-
+            var column = _initialTable.GetColumnByName(columnName).ToDictionary(x => x.Key, x => x.Value);
             var noralizedColumn = NormalizeDict(column, alg);
+
             _clustersDictionary.Add(new KeyValuePair<string, IList<int>>(noralizedColumn.Values.First(), new List<int> { noralizedColumn.Keys.First() }));
 
             for (var i = 1; i < column.Count; i++)

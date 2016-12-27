@@ -8,28 +8,12 @@ namespace Clustering
     {
         public string RemovePunctuation(string str)
         {
-            StringBuilder result = new StringBuilder();
-            foreach (var ch in str)
-            {
-                if (!char.IsPunctuation(ch))
-                {
-                    result.Append(ch);
-                }
-            }
-            return result.ToString();
+            return str.Where(x => !char.IsPunctuation(x)).Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
         }
 
         public string RemoveSeparators(string str)
         {
-            StringBuilder result = new StringBuilder();
-            foreach (var ch in str)
-            {
-                if (char.IsLetterOrDigit(ch))
-                {
-                    result.Append(ch);
-                }
-            }
-            return result.ToString();
+            return str.Where(char.IsLetterOrDigit).Aggregate(new StringBuilder(), (sb, s) => sb.Append(s)).ToString();
         }
 
         public string AlphabetizeWords(string str, string separator)

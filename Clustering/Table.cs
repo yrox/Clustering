@@ -29,10 +29,8 @@ namespace Clustering
             {
                 var str = table.ElementAt(i).ElementAt(index);
 
-                if (string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str))
-                    continue;
-
-                result.Add(i, str);
+                if (!string.IsNullOrEmpty(str) && !string.IsNullOrWhiteSpace(str))
+                    result.Add(i, str);
             }
             return result;
         }
@@ -46,7 +44,6 @@ namespace Clustering
                 {
                     table[row][columnIndex] = table.ElementAt(cluster.Value.First()).ElementAt(columnIndex);
                 }
-                //row[columnIndex] = table.First().ElementAt(columnIndex);
             }
         }
 
