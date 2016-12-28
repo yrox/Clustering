@@ -27,7 +27,7 @@ namespace Clustering.IO
                 using (var sw = new StreamWriter(pathString.ToString()))
                 {
                     var writer = new CsvWriter(sw);
-                    foreach (var row in tables.ElementAt(i).table)
+                    foreach (var row in tables.ElementAt(i).Rows)
                     {
                         foreach (var cell in row)
                         {
@@ -50,7 +50,7 @@ namespace Clustering.IO
             using (var sw = new StreamWriter(pathString.ToString()))
             {
                 var writer = new CsvWriter(sw);
-                foreach (var row in table.table)
+                foreach (var row in table.Rows)
                 {
                     foreach (var cell in row)
                     {

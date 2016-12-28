@@ -24,7 +24,7 @@ namespace Clustering
 
         private string GetDefaultClusterElement(IEnumerable<int> linesIndexes)
         {
-            var values = linesIndexes.Select(index => _initialTable.table.ElementAt(index).ElementAt(_columnIndex)).ToList();
+            var values = linesIndexes.Select(index => _initialTable.Rows.ElementAt(index).ElementAt(_columnIndex)).ToList();
             return values.GroupBy(x => x).OrderByDescending(x => x.Count()).Select(x => x.Key).First();
         }
 
@@ -57,7 +57,7 @@ namespace Clustering
         {
             foreach (var line in linesIndxes)
             {
-                _initialTable.table[line][_columnIndex] = correctValue;
+                _initialTable.Rows[line][_columnIndex] = correctValue;
             }
         }
 
