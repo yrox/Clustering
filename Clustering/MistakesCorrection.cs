@@ -25,9 +25,18 @@ namespace Clustering
             return values.GroupBy(x => x).OrderByDescending(x => x.Count()).Select(x => x.Key).First();
         }
 
-        private void FixTable(IDictionary<string, IList<int>> clusters)
+
+       private void FixTable(IDictionary<string, IList<int>> clusters)
         {
-            _initialTable.CorrectColumn(_options.ColumnName, clusters);
+            var columnIndex = _initialTable.Colunms.IndexOf(_options.ColumnName);
+            foreach (var cluster in clusters)
+            {
+                var correctValue = GetDefaultClusterElement(cluster.Value);
+                foreach (var row in cluster.Value)
+                {
+                    _initialTable.table[row][columnIndex] = correctValue;
+                }
+            }
         }
 
         public Table CorrectMistakes(Table table, string algName)

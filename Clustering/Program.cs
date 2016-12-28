@@ -12,14 +12,14 @@ namespace Clustering
         static void Main(string[] args)
         {
             var options = new CmdOptions();
-            var corrector = new MistakesCorrection(options);
+           
             Parser.Default.ParseArguments(args, options);
              
             var tr = new TableReader();
             var tw = new TableWriter();
             var t = new Table(tr.Read(options.InputFile));
             var clust = new Clustering();
-            
+            var corrector = new MistakesCorrection(options);
 
             //var kernel = new StandardKernel(new ClusteringAlgBindings(options));
             //var alg = kernel.Get<IClusteringAlg>(options.Algorythm);
