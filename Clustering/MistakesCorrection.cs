@@ -9,46 +9,68 @@ namespace Clustering
 {
     public class MistakesCorrection
     {
-        public MistakesCorrection(CmdOptions options)
+        public MistakesCorrection(CmdOptions options, Table table, Clustering clustering)
         {
             _options = options;
+            _initialTable = table;
+            _clustering = clustering;
+            _columnIndex = _initialTable.Colunms.IndexOf(_options.ColumnName);
         }
 
         private Table _initialTable;
         private Clustering _clustering;
         private CmdOptions _options;
+        private int _columnIndex;
 
         private string GetDefaultClusterElement(IEnumerable<int> linesIndexes)
         {
-            var columnIndex = _initialTable.Colunms.IndexOf(_options.ColumnName);
-            var values = linesIndexes.Select(index => _initialTable.table.ElementAt(index).ElementAt(columnIndex)).ToList();
+            var values = linesIndexes.Select(index => _initialTable.table.ElementAt(index).ElementAt(_columnIndex)).ToList();
             return values.GroupBy(x => x).OrderByDescending(x => x.Count()).Select(x => x.Key).First();
         }
 
-
-       private void FixTable(IDictionary<string, IList<int>> clusters)
+        private IClusteringAlg InitializeAlg(string algName)
         {
-            var columnIndex = _initialTable.Colunms.IndexOf(_options.ColumnName);
+            var kernel = new StandardKernel(new ClusteringAlgBindings(_options));
+            return kernel.Get<IClusteringAlg>(algName);
+        }
+
+       private void FixTable(IDictionary<string, IList<int>> clusters, IDictionary<string, string> userValues = null)
+        {
+            
             foreach (var cluster in clusters)
             {
                 var correctValue = GetDefaultClusterElement(cluster.Value);
-                foreach (var row in cluster.Value)
+
+                if (userValues != null)
                 {
-                    _initialTable.table[row][columnIndex] = correctValue;
+                    if (userValues.Keys.Contains(cluster.Key))
+                    {
+                        correctValue = userValues[cluster.Key];
+                    }
                 }
+
+                FixCluster(cluster.Value, correctValue);
             }
         }
 
-        public Table CorrectMistakes(Table table, string algName)
+        private void FixCluster(IEnumerable<int> linesIndxes, string correctValue)
         {
-            _clustering = new Clustering();
-            _initialTable = table;
-            var columnName = _options.ColumnName;
+            foreach (var line in linesIndxes)
+            {
+                _initialTable.table[line][_columnIndex] = correctValue;
+            }
+        }
 
-            var kernel = new StandardKernel(new ClusteringAlgBindings(_options));
-            var alg = kernel.Get<IClusteringAlg>(algName);
-
-            FixTable(_clustering.GetClustersDictionary(alg, columnName, _initialTable));
+        public Table CorrectMistakes(string algName, IDictionary<string, string> userValues = null)
+        {
+            if (userValues == null)
+            {
+                FixTable(_clustering.GetClustersDictionary(InitializeAlg(algName), _options.ColumnName, _initialTable));
+            }
+            else
+            {
+                FixTable(_clustering.GetClustersDictionary(InitializeAlg(algName), _options.ColumnName, _initialTable), userValues);
+            }
             
             return _initialTable;
         }

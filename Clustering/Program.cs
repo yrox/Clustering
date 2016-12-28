@@ -19,8 +19,8 @@ namespace Clustering
             var tw = new TableWriter();
             var t = new Table(tr.Read(options.InputFile));
             var clust = new Clustering();
-            var corrector = new MistakesCorrection(options);
-
+            var corrector = new MistakesCorrection(options, t, clust);
+            
             //var kernel = new StandardKernel(new ClusteringAlgBindings(options));
             //var alg = kernel.Get<IClusteringAlg>(options.Algorythm);
 
@@ -30,8 +30,7 @@ namespace Clustering
             //var a = Activator.CreateInstance("Clustering", "Clustering.Options");
             //var alg = Activator.CreateInstance("Clustering", options.Algorythm) as IClusteringAlg;
 
-            tw.Write(corrector.CorrectMistakes(t, options.Algorythm));
-            //tw.Write(clust.GetClusters(alg, options.ColumnName, t), options.ColumnName);
+            tw.Write(corrector.CorrectMistakes(options.Algorythm));
         }
     }
 }
