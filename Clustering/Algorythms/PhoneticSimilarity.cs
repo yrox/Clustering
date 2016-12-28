@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Clustering.Interfaces;
 using Phonix;
 
@@ -8,19 +9,13 @@ namespace Clustering.Algorythms
     {
         public IEnumerable<string> NormalizeStrings(IEnumerable<string> stringCol)
         {
-            var result = new List<string>();
-            foreach (var str in stringCol)
-            {
-                var temp = str.ToLower();
-                StringModifier sm = new StringModifier();
-                temp = sm.RemovePunctuation(temp);
-                temp = sm.AlphabetizeWords(temp, "");
-                DoubleMetaphone dm = new DoubleMetaphone();
-                temp = dm.BuildKey(temp);
-                result.Add(temp);
-            }
-
-            return result;
+            stringCol = stringCol.ToList();
+            var sm = new StringModifier();
+            var dm = new DoubleMetaphone();
+            return stringCol.Select(x => x.ToLower())
+                .Select(x => sm.RemovePunctuation(x))
+                .Select(x => sm.AlphabetizeWords(x, ""))
+                .Select(x => dm.BuildKey(x)).ToList();
         }
 
         public bool AreEqual(string str1, string str2)

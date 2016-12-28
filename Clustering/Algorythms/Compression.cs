@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Text;
 using Clustering.Interfaces;
 
@@ -31,18 +32,10 @@ namespace Clustering.Algorythms
 
         public IEnumerable<string> NormalizeStrings(IEnumerable<string> stringCol)
         {
-            var result = new List<string>();
-            foreach (var str in stringCol)
-            {
-                var temp = str.ToLower();
-                StringModifier sm = new StringModifier();
-                temp = sm.RemovePunctuation(temp);
-                temp = sm.AlphabetizeWords(temp,"");
+            stringCol = stringCol.ToList();
+            var sm = new StringModifier();
+            return stringCol.Select(x => x.ToLower()).Select(x => sm.RemovePunctuation(x)).Select(x => sm.AlphabetizeWords(x, "")).ToList();
 
-                result.Add(temp);
-            }
-            return result;
-            
         }
 
         public bool AreEqual(string str1, string str2)

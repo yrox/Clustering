@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Clustering.Interfaces;
@@ -12,7 +13,7 @@ namespace Clustering.Algorythms
             _nGramSize = threshold;
         }
         private int _nGramSize; 
-        private string getNGrams(string str)
+        private string GetNGrams(string str)
         {
             StringBuilder result = new StringBuilder();
             
@@ -26,18 +27,12 @@ namespace Clustering.Algorythms
 
         public IEnumerable<string> NormalizeStrings(IEnumerable<string> stringCol)
         {
-            var result = new List<string>();
-            foreach (var str in stringCol)
-            {
-                var temp = str.ToLower();
-                StringModifier sm = new StringModifier();
-                temp = sm.RemovePunctuation(temp);
-                temp = getNGrams(temp);
-                temp = sm.AlphabetizeWords(temp, "");
-                result.Add(temp);
-            }
-
-            return result;
+            stringCol = stringCol.ToList();
+            var sm = new StringModifier();
+            return stringCol.Select(x => x.ToLower()).
+                Select(x => sm.RemovePunctuation(x)).
+                Select(GetNGrams).
+                Select(x => sm.AlphabetizeWords(x, "")).ToList();
         }
 
         public bool AreEqual(string str1, string str2)

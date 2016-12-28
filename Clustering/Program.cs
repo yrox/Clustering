@@ -30,7 +30,7 @@ namespace Clustering
             //var a = Activator.CreateInstance("Clustering", "Clustering.Options");
             //var alg = Activator.CreateInstance("Clustering", options.Algorythm) as IClusteringAlg;
 
-            tw.Write(corrector.CorrectMistakes(t, "KeyCollision"));
+            tw.Write(corrector.CorrectMistakes(t, options.Algorythm));
             //tw.Write(clust.GetClusters(alg, options.ColumnName, t), options.ColumnName);
         }
     }
